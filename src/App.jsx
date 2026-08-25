@@ -803,31 +803,32 @@ export default function App() {
       {/* BUTTONS */}
       <div className="flex-row-center bottomButton">
         {!isCaptured ? (
-          <div>
+          <div className="flex-row-center bottomButton">
             <button
               onClick={handleCapture}
               type="button"
               disabled={!isCameraReady || isCounting}
+              className="responsive-btn"
             >
               {isCounting ? "GET READY..." : "CAPTURE"}
             </button>
-            <br />
-            <br />
-            <br />
-            <button onClick={handleSwitchCamera}>Switch camera</button>
+
+            <button className="responsive-btn" onClick={handleSwitchCamera}>
+              Switch camera
+            </button>
           </div>
         ) : (
           <>
             <div onClick={handleRetake}>
-              <button type="button">RETAKE</button>
+              <button type="button" className="responsive-btn">
+                RETAKE
+              </button>
             </div>
 
             <div onClick={handleDownload}>
-              <button type="button">DOWNLOAD</button>
-            </div>
-
-            <div onClick={handleNext}>
-              <button type="button">NEXT</button>
+              <button type="button" className="responsive-btn">
+                DOWNLOAD
+              </button>
             </div>
           </>
         )}
