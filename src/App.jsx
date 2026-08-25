@@ -799,8 +799,12 @@ export default function App() {
       {/* BUTTONS */}
       <div className="flex-row-center bottomButton">
         {!isCaptured ? (
-          <div onClick={handleCapture}>
-            <button type="button" disabled={!isCameraReady || isCounting}>
+          <div>
+            <button
+              onClick={handleCapture}
+              type="button"
+              disabled={!isCameraReady || isCounting}
+            >
               {isCounting ? "GET READY..." : "CAPTURE"}
             </button>
             <br />
