@@ -2,7 +2,7 @@
   justify-content: flex-start;
   margin-top: 2vh;
   gap: 5vh;
-
+  border: 1px solid red;
   @media (max-width: 480px) {
     gap: 3vh;
   }

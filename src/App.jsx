@@ -335,6 +335,8 @@ export default function App() {
   const [isCounting, setIsCounting] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
 
+  const [cameraFacingMode, setCameraFacingMode] = useState("user");
+
   // --------------------------------------------------
   // GET 2:3 CROP
   // --------------------------------------------------
@@ -698,9 +700,19 @@ export default function App() {
     },
 
     facingMode: {
-      ideal: "user",
+      ideal: cameraFacingMode,
     },
   };
+
+  const handleSwitchCamera = () => {
+    setIsCameraReady(false);
+
+    setCameraFacingMode((prev) => (prev === "user" ? "environment" : "user"));
+  };
+
+  useEffect(() => {
+    console.log(capturedImg);
+  }, [capturedImg]);
 
   // --------------------------------------------------
   // UI
@@ -791,6 +803,8 @@ export default function App() {
             <button type="button" disabled={!isCameraReady || isCounting}>
               {isCounting ? "GET READY..." : "CAPTURE"}
             </button>
+            <br />
+            <button onClick={handleSwitchCamera}>Switch camera</button>
           </div>
         ) : (
           <>
