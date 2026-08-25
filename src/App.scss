@@ -1,0 +1,59 @@
+.CameraPage {
+  justify-content: flex-start;
+  margin-top: 2vh;
+  gap: 5vh;
+
+  @media (max-width: 480px) {
+    gap: 3vh;
+  }
+
+  .mainCameraWrapper {
+    width: 45vh;
+
+    @media (max-width: 480px) {
+      width: 38vh;
+    }
+
+    .webcamParent {
+      border: 0.25vh solid #fff;
+      border-radius: 1.5vh;
+      background-color: #fff;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+
+      @media all and (max-width: 480px) {
+        border: 0.2vh solid #fff;
+        border-radius: 1vh;
+      }
+
+      #webcam {
+        width: 100%;
+      }
+
+      .countdown {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 8vh;
+        color: #fff;
+        text-shadow:
+          0 0 8px #fff,
+          0 0 45px #fff,
+          0 0 90px #fff;
+      }
+
+      .capturedImage {
+        width: 100%;
+        transform: translate(0.1vw, 0.1);
+      }
+    }
+  }
+
+  .bottomButton {
+    gap: 2vh;
+    flex-wrap: wrap;
+  }
+}

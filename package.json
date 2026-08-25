@@ -18,6 +18,8 @@
     "react-dom": "^19.2.8",
     "react-toastify": "^11.1.0",
     "react-webcam": "^7.2.0",
+    "sass": "^1.103.1",
+    "scss": "^0.2.4",
     "three": "^0.185.1"
   },
   "devDependencies": {

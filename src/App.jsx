@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+
+import "./App.scss";
 import Webcam from "react-webcam";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
 
 const toastOptions = {
   position: "top-center",
@@ -59,12 +60,11 @@ export default function App() {
   }, []);
 
   // --------------------------------------------------
-  // CAPTURE IMAGE
+  // HIGH QUALITY CAPTURE
   //
-  // Uses the camera's actual videoWidth/videoHeight.
-  // No crop.
-  // No forced ratio.
-  // No resize.
+  // NO RATIO
+  // NO CROP
+  // NO RESIZE
   // --------------------------------------------------
   const captureImage = useCallback(() => {
     const video = camRef.current?.video;
@@ -87,7 +87,7 @@ export default function App() {
       return null;
     }
 
-    console.log("Capturing:", width, "x", height);
+    console.log("Capturing camera frame:", width, "x", height);
 
     let canvas = canvasRef.current;
 
@@ -96,7 +96,6 @@ export default function App() {
       canvasRef.current = canvas;
     }
 
-    // EXACT camera resolution
     canvas.width = width;
     canvas.height = height;
 
@@ -112,7 +111,7 @@ export default function App() {
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
 
-    // Mirror captured image to match live camera
+    // Mirror captured image
     ctx.save();
 
     ctx.translate(width, 0);
@@ -122,10 +121,10 @@ export default function App() {
 
     ctx.restore();
 
-    // PNG keeps the captured pixels lossless
+    // PNG
     const imageData = canvas.toDataURL("image/png");
 
-    console.log("Captured PNG:", width, "x", height);
+    console.log("Captured PNG resolution:", width, "x", height);
 
     return imageData;
   }, []);
@@ -181,113 +180,127 @@ export default function App() {
   // RETAKE
   // --------------------------------------------------
   const handleRetake = () => {
-    setCapturedImg("");
     setIsCaptured(false);
+    setCapturedImg("");
     setCountdown(3);
     setIsCounting(false);
   };
 
   // --------------------------------------------------
-  // DOWNLOAD IMAGE
+  // DOWNLOAD
   // --------------------------------------------------
   const handleDownload = () => {
     if (!capturedImg) {
-      toast.warning("Please capture an image first.", toastOptions);
+      toast.warning("Please capture image first!", toastOptions);
       return;
     }
 
     const link = document.createElement("a");
 
     link.href = capturedImg;
-
     link.download = `ai_photobooth_${Date.now()}.png`;
 
     document.body.appendChild(link);
-
     link.click();
-
     document.body.removeChild(link);
+  };
+
+  // --------------------------------------------------
+  // NEXT
+  // --------------------------------------------------
+  const handleNext = () => {
+    if (!capturedImg) {
+      toast.warning("Please capture image first!", toastOptions);
+      return;
+    }
+
+    console.log("Next clicked");
+    console.log("Captured image:", capturedImg);
+
+    // Add your next-page/application logic here.
   };
 
   // --------------------------------------------------
   // CAMERA CONSTRAINTS
   //
-  // No aspect ratio.
-  // Camera chooses the best supported resolution.
+  // NO ASPECT RATIO
   // --------------------------------------------------
   const videoConstraints = {
     width: {
       ideal: 3840,
     },
+
     height: {
       ideal: 2160,
     },
+
     facingMode: {
       ideal: "user",
     },
   };
 
   return (
-    <div className="app">
-      <ToastContainer />
-
+    <div className="flex-col-center CameraPage">
       {/* HEADING */}
-      <h1 className="heading">
-        {isCaptured ? "DO YOU LIKE IT?" : "CAPTURE YOUR PHOTO"}
-      </h1>
+      {!isCaptured ? (
+        <h1 className="heading">CAPTURE YOUR PHOTO</h1>
+      ) : (
+        <h1 className="heading">DO YOU LIKE IT ?</h1>
+      )}
 
       {/* CAMERA */}
-      <div className="cameraWrapper">
-        {!isCaptured ? (
-          <Webcam
-            ref={camRef}
-            className="webcam"
-            audio={false}
-            mirrored={true}
-            videoConstraints={videoConstraints}
-            onUserMedia={handleCameraReady}
-            onUserMediaError={handleCameraError}
-          />
-        ) : (
-          <img className="capturedImage" src={capturedImg} alt="Captured" />
-        )}
+      <div className="flex-row-center mainCameraWrapper">
+        <div className="flex-row-center webcamParent">
+          {isCaptured ? (
+            <img className="capturedImage" src={capturedImg} alt="Captured" />
+          ) : (
+            <Webcam
+              ref={camRef}
+              id="webcam"
+              audio={false}
+              mirrored={true}
+              videoConstraints={videoConstraints}
+              onUserMedia={handleCameraReady}
+              onUserMediaError={handleCameraError}
+            />
+          )}
 
-        {/* CAMERA STATUS */}
-        {!isCaptured && !isCameraReady && (
-          <div className="cameraStatus">Starting camera...</div>
-        )}
-
-        {/* COUNTDOWN */}
-        {!isCaptured && isCounting && (
-          <div className="countdown">{countdown}</div>
-        )}
+          {/* COUNTDOWN */}
+          {!isCaptured && isCounting && (
+            <span className="countdown">{countdown}</span>
+          )}
+        </div>
       </div>
 
       {/* BUTTONS */}
-      <div className="buttons">
+      <div className="flex-row-center bottomButton">
         {!isCaptured ? (
-          <button
-            className="btn"
-            onClick={handleCapture}
-            disabled={!isCameraReady || isCounting}
-          >
-            {isCounting ? "GET READY..." : "CAPTURE"}
-          </button>
+          <div onClick={handleCapture}>
+            <button type="button" disabled={!isCameraReady || isCounting}>
+              {isCounting ? "GET READY..." : "CAPTURE"}
+            </button>
+          </div>
         ) : (
           <>
-            <button className="btn" onClick={handleRetake}>
-              RETAKE
-            </button>
+            <div onClick={handleRetake}>
+              <button type="button">RETAKE</button>
+            </div>
 
-            <button className="btn" onClick={handleDownload}>
-              DOWNLOAD IMAGE
-            </button>
+            <div onClick={handleDownload}>
+              <button type="button">DOWNLOAD</button>
+            </div>
+
+            <div onClick={handleNext}>
+              <button type="button">NEXT</button>
+            </div>
           </>
         )}
       </div>
 
-      {/* HIDDEN CANVAS USED FOR CAPTURE */}
+      {/* HIDDEN CANVAS */}
       <canvas ref={canvasRef} style={{ display: "none" }} />
+
+      <ToastContainer />
     </div>
   );
 }
