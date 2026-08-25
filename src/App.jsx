@@ -744,7 +744,7 @@ export default function App() {
                 ref={camRef}
                 id="webcam"
                 audio={false}
-                mirrored={true}
+                mirrored={cameraFacingMode === "user"}
                 videoConstraints={videoConstraints}
                 onUserMedia={handleCameraReady}
                 onUserMediaError={handleCameraError}
@@ -803,6 +803,8 @@ export default function App() {
             <button type="button" disabled={!isCameraReady || isCounting}>
               {isCounting ? "GET READY..." : "CAPTURE"}
             </button>
+            <br />
+            <br />
             <br />
             <button onClick={handleSwitchCamera}>Switch camera</button>
           </div>
