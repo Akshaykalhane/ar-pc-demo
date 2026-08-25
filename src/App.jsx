@@ -456,8 +456,10 @@ export default function App() {
       // Mirror camera
       ctx.save();
 
-      ctx.translate(displayWidth, 0);
-      ctx.scale(-1, 1);
+      if (cameraFacingMode === "user") {
+        ctx.translate(displayWidth, 0);
+        ctx.scale(-1, 1);
+      }
 
       ctx.drawImage(
         video,
