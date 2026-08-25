@@ -570,8 +570,10 @@ export default function App() {
     // Mirror captured image
     ctx.save();
 
-    ctx.translate(outputWidth, 0);
-    ctx.scale(-1, 1);
+    if (cameraFacingMode === "user") {
+      ctx.translate(outputWidth, 0);
+      ctx.scale(-1, 1);
+    }
 
     ctx.drawImage(
       video,
@@ -590,7 +592,7 @@ export default function App() {
     const imageData = canvas.toDataURL("image/png");
 
     return imageData;
-  }, [getCrop]);
+  }, [getCrop, cameraFacingMode]);
 
   // --------------------------------------------------
   // COUNTDOWN
