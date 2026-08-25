@@ -477,7 +477,7 @@ export default function App() {
     }
 
     animationFrameRef.current = requestAnimationFrame(drawLivePreview);
-  }, [getCrop]);
+  }, [getCrop, cameraFacingMode]);
 
   // --------------------------------------------------
   // START LIVE PREVIEW
